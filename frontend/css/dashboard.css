@@ -1,0 +1,102 @@
+#dashboard {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--ibu-mid-blue);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.sidebar h2 {
+  color: var(--ibu-orange);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar .nav-link {
+  color: var(--ibu-white);
+  font-weight: 500;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background-color: var(--ibu-orange);
+  color: var(--ibu-white);
+}
+
+.main {
+  margin-left: 250px; 
+  flex-grow: 1;
+  background-color: var(--ibu-mid-blue);
+  color: var(--ibu-white);
+  padding: 2.5rem;
+  min-height: 100vh;
+}
+
+.main h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--ibu-orange);
+}
+
+.card-dashboard {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  text-align: center;
+  padding: 1.5rem;
+  color: #333;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card-dashboard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-dashboard h5 {
+  color: var(--ibu-mid-blue);
+  font-weight: 700;
+}
+
+.card-dashboard p {
+  font-size: 2rem;
+  color: var(--ibu-orange);
+  font-weight: 700;
+}
+
+.card-dashboard canvas {
+  width: 100% !important;
+  height: 250px !important; 
+}
+@media (max-width: 992px) {
+  #dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}

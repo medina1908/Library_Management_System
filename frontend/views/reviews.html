@@ -1,0 +1,109 @@
+<h1 class="text-center my-4">Student's Reviews</h1>
+
+<main class="container my-5">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div id="reviewsList">
+         <div class="card review-card p-4 mb-3">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <h5>Nejla Hasanović</h5>
+      <p class="text-muted mb-1">Book: Clean Code</p>
+    </div>
+    <div class="star-rating">
+      <span>★★★★★</span>
+    </div>
+  </div>
+  <p class="mt-3">
+    This book completely changed the way I write code. 
+    The examples are clear, and the explanations are so practical! 
+    Highly recommend it for every developer.
+  </p>
+</div>
+
+        <div class="card review-card p-4 mb-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5>Hamza Husic</h5>
+              <p class="text-muted mb-1">Book: Java Programming</p>
+            </div>
+            <div class="star-rating">
+              <span>★★★★☆</span>
+            </div>
+          </div>
+          <p class="mt-3">Great collection of books and very helpful staff!</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-5">
+      <div class="card submit-card p-4">
+        <h4 class="text-center mb-4">Leave a Review</h4>
+        <form id="reviewForm">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" placeholder="Full Name" required>
+            <label for="name">Full Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" placeholder="Email" required>
+            <label for="email">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="book" placeholder="Book Name" required>
+            <label for="book">Book Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control" id="reviewText" placeholder="Write your review" style="height:120px" required></textarea>
+            <label for="reviewText">Review</label>
+          </div>
+          <div class="star-rating mb-3">
+            <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars">★</label>
+            <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
+            <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+            <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
+            <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+          </div>
+          <button type="submit" class="btn btn-gradient w-100">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const reviewForm = document.getElementById('reviewForm');
+  const reviewsList = document.getElementById('reviewsList');
+
+  reviewForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const book = document.getElementById('book').value.trim();
+    const reviewText = document.getElementById('reviewText').value.trim();
+    const rating = document.querySelector('input[name="rating"]:checked')?.value || 0;
+
+    if (!name || !book || !reviewText || rating == 0) {
+      alert('Please fill out all fields and select a rating.');
+      return;
+    }
+
+    const newReview = document.createElement('div');
+    newReview.className = 'card review-card p-4 mb-3';
+    newReview.innerHTML = `
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5>${name}</h5>
+          <p class="text-muted mb-1">Book: ${book}</p>
+        </div>
+        <div class="star-rating">
+          <span>${'★'.repeat(rating) + '☆'.repeat(5 - rating)}</span>
+        </div>
+      </div>
+      <p class="mt-3">${reviewText}</p>
+    `;
+
+    reviewsList.prepend(newReview);
+    reviewForm.reset();
+  });
+</script>
