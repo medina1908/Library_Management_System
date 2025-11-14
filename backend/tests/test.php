@@ -1,9 +1,9 @@
 <?php
-require_once 'dao/UserDao.php';
-require_once 'dao/GenreDao.php';
-require_once 'dao/BookDao.php';
-require_once 'dao/ReviewDao.php';
-require_once 'dao/BorrowHistoryDao.php';
+require_once '../rest/dao/UserDao.php';
+require_once '../rest/dao/GenreDao.php';
+require_once '../rest/dao/BookDao.php';
+require_once '../rest/dao/ReviewDao.php';
+require_once '../rest/dao/BorrowHistoryDao.php';
 
 $userDao = new UserDao();
 $genreDao = new GenreDao();

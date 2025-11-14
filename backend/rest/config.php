@@ -2,6 +2,8 @@
 class Database {
    private static $host = 'localhost';
    private static $dbName = 'library_management_system';
+      private static $username = 'root';
+         private static $password = '';
    private static $connection = null;
 
 
