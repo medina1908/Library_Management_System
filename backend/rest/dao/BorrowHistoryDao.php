@@ -25,6 +25,13 @@ class BorrowHistoryDao extends BaseDao {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    public function markAsReturned($id, $returnDate) {
+        $stmt = $this->connection->prepare("UPDATE borrow_history SET return_date = :return_date, status = 'RETURNED' WHERE id = :id");
+        $stmt->bindParam(':return_date', $returnDate);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
 
 

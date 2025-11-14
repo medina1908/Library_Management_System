@@ -12,6 +12,12 @@ class ReviewDao extends BaseDao {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function getByBookId($bookId) {
+        $stmt = $this->connection->prepare("SELECT * FROM reviews WHERE book_id = :book_id");
+        $stmt->bindParam(':book_id', $bookId);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     public function getAverageRating($bookId) {
         $stmt = $this->connection->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM reviews WHERE book_id = :book_id");
         $stmt->bindParam(':book_id', $bookId);
