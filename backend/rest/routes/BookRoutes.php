@@ -83,6 +83,7 @@ Flight::route('GET /books/genre/@genreId', function($genreId){
  */
 
 Flight::route('POST /books', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     $result = Flight::bookService()->addBook($data);
 
@@ -117,6 +118,7 @@ Flight::route('POST /books', function(){
  * )
  */
 Flight::route('PUT /books/@id', function($id){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     $result = Flight::bookService()->updateBook($id, $data);
     Flight::json($result);
@@ -141,6 +143,7 @@ Flight::route('PUT /books/@id', function($id){
  * )
  */
 Flight::route('DELETE /books/@id', function($id){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $result = Flight::bookService()->deleteBook($id);
     Flight::json($result);
 });

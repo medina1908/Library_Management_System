@@ -17,7 +17,7 @@ Flight::route('GET /reviews', function(){
 /**
  * @OA\Get(
  *     path="/reviews/user/{userId}",
- *     tags={"reviews"},
+ *     tags={"reviews"},A
  *     summary="Get all reviews by a specific user",
  *     @OA\Parameter(
  *         name="userId",
@@ -84,6 +84,7 @@ Flight::route('POST /reviews', function(){
     $result = Flight::reviewService()->createReview($data);
     Flight::json($result);
 });
+
 /**
  * @OA\Put(
  *     path="/reviews/{reviewId}",
@@ -110,6 +111,7 @@ Flight::route('POST /reviews', function(){
  * )
  */
 Flight::route('PUT /reviews/@reviewId', function($reviewId){
+  //  Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     $result = Flight::reviewService()->updateReviewText($reviewId, $data['text']);
     Flight::json($result);
@@ -133,6 +135,7 @@ Flight::route('PUT /reviews/@reviewId', function($reviewId){
  * )
  */
 Flight::route('DELETE /reviews/@reviewId', function($reviewId){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $result = Flight::reviewService()->deleteReview($reviewId);
     Flight::json($result);
 });

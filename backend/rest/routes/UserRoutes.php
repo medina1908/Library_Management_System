@@ -18,10 +18,19 @@
 * )
 */
 Flight::route('GET /users', function(){
-    $result = Flight::userService()->getAllUsers();
+    Flight::auth_middleware()->authorizeRoles([Roles::STUDENT,Roles::ADMIN]);
+    $user = Flight::get('user');
+    $result;
 
-    foreach($result as &$user){
-        unset($user['password']);
+    if($user->role == Roles::ADMIN){
+        // PROMIJENITE: get_all() -> getAllUsers()
+        $result = Flight::userService()->getAllUsers();
+        foreach($result as &$user){
+            unset($user['password']);
+        }
+    }else{
+        // PROMIJENITE: get_by_id() -> getUserById()
+        $result = Flight::userService()->getUserById($user->id);
     }
 
     Flight::json($result);
@@ -53,11 +62,15 @@ Flight::route('GET /users', function(){
  * )
  */
 Flight::route('GET /users/@id', function($id){
-    $user = Flight::userService()->getUserById($id);
-    //I will have special if statement when user is requesting his info
-    //e.g profile page for changing password
-    unset($user['password']);
-    Flight::json($user);
+   $user = Flight::get('user'); 
+
+    if($user->role == Roles::STUDENT && $user->id != $id){
+        Flight::halt(403, "Access denied");
+    }
+
+    $result = Flight::userService()->getUserById($id);
+    unset($result['password']);
+    Flight::json($result);
 });
 
 /**
@@ -124,10 +137,77 @@ Flight::route('GET /users/@id', function($id){
  *     )
  * )
  */
-
 Flight::route('PUT /users/@id', function($id){
+    Flight::auth_middleware()->authorizeRoles([Roles::STUDENT,Roles::ADMIN]);
+    $user = Flight::get('user');
     $data = Flight::request()->data->getData();
-    $result = Flight::userService()->updateUser($id, $data);
+    $result;
+    
+    if($user->role == Roles::ADMIN){        
+        
+        if(!$data['id']){
+            Flight::halt(400, "Please provide user id");
+        }
+
+        $user_id = $data['id'];
+
+        if($data['id'] != $user->id){
+            unset($data['room_id']);
+            unset($data['password']);
+            unset($data['phone']);
+            unset($data['year']);
+            unset($data['id']);
+        }
+
+        // PROMIJENITE: update() -> updateUser()
+        $result = Flight::userService()->updateUser($user_id, $data);
+    }else{
+        unset($data['id']);
+        unset($data['role']);
+        unset($data['room_id']);
+        unset($data['is_active']);
+        // PROMIJENITE: update() -> updateUser()
+        $result = Flight::userService()->updateUser($user->id, $data);
+    }
+    
+    Flight::json($result);
+});
+
+/**
+ * @OA\Post(
+ *     path="/users",
+ *     summary="Create a new user",
+ *     description="Add a new user to the database.",
+ *     tags={"users"},
+ *     security={
+ *         {"ApiKey": {}}
+ *     },
+ *     @OA\RequestBody(
+ *         description="New user information",
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"name", "email", "password"},
+ *             @OA\Property(property="name", type="string", example="John Doe"),
+ *             @OA\Property(property="email", type="string", example="john.doe@gmail.com"),
+ *             @OA\Property(property="password", type="string", example="password123"),
+ *             @OA\Property(property="role", type="string", enum={"Admin", "Student", "Librarian"}, example="Student"),
+ *             @OA\Property(property="status", type="string", enum={"Active", "Nonactive"}, example="Active")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="User created successfully."
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Internal server error."
+ *     )
+ * )
+ */
+Flight::route('POST /users', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+    $data = Flight::request()->data->getData();
+    $result = Flight::userService()->addUser($data);
     Flight::json($result);
 });
 
@@ -158,7 +238,7 @@ Flight::route('PUT /users/@id', function($id){
  * )
  */
 Flight::route('DELETE /users/@id', function($id){
-    //I will add here logic to not delete user if it is admin
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $result = Flight::userService()->deleteUser($id);
     Flight::json($result);
 });

@@ -1,12 +1,16 @@
 <section id="history">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2><i class="bi bi-clock-history"></i>Borrow History</h2>
-      <button class="btn-refresh">🔄 Refresh</button>
+  <div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-white">
+        <i class="bi bi-clock-history"></i> Borrow History
+      </h2>
+      <button class="btn btn-gradient" id="refreshBtn">
+        🔄 Refresh
+      </button>
     </div>
 
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped history-table">
         <thead>
           <tr>
             <th>#</th>
@@ -17,49 +21,78 @@
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="historyTableBody">
           <tr>
-            <td>1</td>
-            <td>Emina Zekić</td>
-            <td>Pride and Prejudice</td>
-            <td>2025-09-28</td>
-            <td>2025-10-10</td>
-            <td><span class="badge bg-success">Returned</span></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Edin Gegić</td>
-            <td>The Great Gatsby</td>
-            <td>2025-10-05</td>
-            <td>-</td>
-            <td><span class="badge bg-warning">Borrowed</span></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Amila Redzić</td>
-            <td>1984</td>
-            <td>2025-09-15</td>
-            <td>2025-09-30</td>
-            <td><span class="badge bg-success">Returned</span></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Nedim Smajić</td>
-            <td>To Kill a Mockingbird</td>
-            <td>2025-10-01</td>
-            <td>-</td>
-            <td><span class="badge bg-warning">Borrowed</span></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Benjamin Mahmutović</td>
-            <td>The Catcher in the Rye</td>
-            <td>2025-08-20</td>
-            <td>2025-10-15</td>
-            <td><span class="badge bg-danger">Overdue</span></td>
+            <td colspan="6" class="text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
+ <script type="text/javascript">
+        HistoryService.init();
+    </script>
+<style>
+  #history {
+    padding: 40px 0;
+  }
+
+  #history .history-table {
+    background: var(--white);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+
+  #history .history-table thead {
+    background: linear-gradient(135deg, var(--mid), var(--light));
+    color: var(--white);
+  }
+
+  #history .history-table thead th {
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+  }
+
+  #history .history-table tbody tr {
+    transition: all 0.3s ease;
+  }
+
+  #history .history-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+  }
+
+  #history .history-table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: var(--dark);
+  }
+
+  #history .badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  #history .no-data {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray);
+  }
+
+  #history .no-data i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  #history #refreshBtn {
+    padding: 0.5rem 1.5rem;
+  }
+</style>

@@ -33,6 +33,10 @@ class BookService extends BaseService {
             throw new Exception("Author is required!");
         }
         
+        if (empty($data['genre_id'])) {
+            throw new Exception("Genre is required!");
+        }
+        
         $existing = $this->dao->getByIsbn($data['isbn']);
         if ($existing) {
             throw new Exception("Book with ISBN {$data['isbn']} already exists!");
@@ -42,7 +46,7 @@ class BookService extends BaseService {
             $data['available_quantity'] = 0;
         }
         
-        return $this->dao->insert($data);
+        return $this->dao->add($data);  
     }
     
     public function updateBook($id, $data) {
@@ -58,7 +62,7 @@ class BookService extends BaseService {
             }
         }
         
-        return $this->dao->update($id, $data);
+        return $this->dao->update($data, $id);
     }
     
     public function deleteBook($id) {

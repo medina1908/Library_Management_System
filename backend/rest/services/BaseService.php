@@ -11,7 +11,7 @@ class BaseService {
        return $this->dao->getById($id);
    }
    public function create($data) {
-       return $this->dao->insert($data);
+       return $this->dao->add($data);
    }
    public function update($id, $data) {
        return $this->dao->update($id, $data);
