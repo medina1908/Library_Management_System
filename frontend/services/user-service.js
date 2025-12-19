@@ -11,20 +11,49 @@ if (typeof toastr !== 'undefined') {
 }
 
 var UserService = {
-    init: function () {
-        $("#authLoginForm").on("submit", function(e) {
-            e.preventDefault();
-            
-            var entity = Object.fromEntries(new FormData(this).entries());
+init: function () {
+    var token = localStorage.getItem("user_token");
+    if (token && token !== undefined) {
+        window.location.replace("#home");
+        return; 
+    }
+    
+    $("#authLoginForm").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            }, 
+            password: {
+                required: true,
+                minlength: 8  
+            }
+        },
+        messages: {
+            email: {
+                required: "Please enter your email",
+                email: "Please enter a valid email address"
+            },
+            password: {
+                required: "Please enter your password",
+                minlength: "Password must be at least 8 characters"
+            }
+        },
+     submitHandler: function (form) {
+            var entity = Object.fromEntries(new FormData(form).entries());
+            console.log('Login attempt with:', entity); // DEBUG
             UserService.login(entity);
-        });
-    },
+            return false;
+        }
+    });
+},
 
     getToken: function() {
         return localStorage.getItem("user_token");
     },
 
     login: function (entity) {
+        $.blockUI({ message: '<h3>Logging in...</h3>' });
         $.ajax({
             url: Constants.PROJECT_BASE_URL + "auth/login",
             type: "POST",
@@ -45,6 +74,7 @@ var UserService = {
 
                     var user = Utils.parseJwt(result.data.token).user;
                     localStorage.setItem("user_role", user.role);
+                    $.unblockUI();
 
                     if (window.location.hash === "#dashboard" && typeof Dashboard !== 'undefined') {
                         Dashboard.init();
@@ -68,6 +98,7 @@ var UserService = {
 
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log("Server error response:", XMLHttpRequest.responseText);
+                $.unblockUI();
 
                 var text = XMLHttpRequest.responseText;
                 if (text.includes('"message":"User logged in successfully"')) {

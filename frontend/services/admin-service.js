@@ -34,26 +34,72 @@ let AdminService = {
        AdminService.initForms();
        AdminService.getAllStudents();
    },
-   
    initForms: function() {
-       $("#addStudentForm").off('submit').on('submit', function(e) {
-           e.preventDefault();
-           
-           var formData = Object.fromEntries(new FormData(this).entries());
-           console.log('Adding student:', formData);
-           
-           AdminService.addStudent(formData);
-       });
-       
-       $("#editStudentForm").off('submit').on('submit', function(e) {
-           e.preventDefault();
-           
-           var formData = Object.fromEntries(new FormData(this).entries());
-           console.log('Editing student:', formData);
-           
-           AdminService.editStudent(formData);
-       });
-   },
+    $("#addStudentForm").validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 40  
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 8
+            },
+            role: {
+                required: true
+            }
+        },
+        messages: {
+            name: {
+                required: "Please enter first and last name",
+                minlength: "Name must be at least 2 characters long",
+                maxlength: "Name cannot exceed 40 characters"  
+            }, 
+            email: {
+                required: "Please enter an email address",
+                email: "Please enter a valid email address" 
+            },
+            password: {
+                required: "Please enter a password",
+                minlength: "Password must be at least 8 characters" 
+            },
+            role: {
+                required: "Please choose role"
+            }
+        }
+    });
+    
+  $("#editStudentForm").validate({  
+        rules: {
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 40
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            name: {
+                required: "Please enter student name",
+                minlength: "Name must be at least 2 characters",
+                maxlength: "Name cannot exceed 40 characters"
+            },
+            email: {
+                required: "Please enter email address",
+                email: "Please enter a valid email address"
+            }
+        }
+    });
+},
+
    
    getAuthHeaders: function() {
        const token = localStorage.getItem('user_token');
@@ -69,8 +115,7 @@ let AdminService = {
    },
    
    addStudent: function (student) {
-       $('#addStudentForm button[type="submit"]').prop('disabled', true).text('Saving...');
-       
+     $.blockUI({ message: '<h3>Adding student...</h3>' });
        console.log('=== ADD STUDENT ===');
        console.log('Data to send:', student);
        
@@ -81,6 +126,7 @@ let AdminService = {
            data: JSON.stringify(student),
            success: function(response) {
                console.log('Student added successfully:', response);
+                $.unblockUI(); 
                toastr.success("Student added successfully");
                AdminService.closeModal();
                AdminService.getAllStudents();
@@ -89,8 +135,9 @@ let AdminService = {
            },
            error: function(xhr) {
                console.error('Add student error:', xhr.responseText);
+                $.unblockUI();
                toastr.error(xhr.responseJSON?.message || xhr.responseText || "Error adding student");
-               $('#addStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
+              // $('#addStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
            }
        });
    },
@@ -144,7 +191,8 @@ let AdminService = {
    
    openEditModal : function(id) {
        $('#editStudentModal').show();
-       $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Loading...');
+       $.blockUI({ message: '<h3>Loading...</h3>' });
+      // $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Loading...');
        
        $.ajax({
            url: Constants.PROJECT_BASE_URL + 'users/' + id,
@@ -155,10 +203,12 @@ let AdminService = {
                $('#editStudentForm input[name="id"]').val(data.id);
                $('#editStudentForm input[name="name"]').val(data.name);
                $('#editStudentForm input[name="email"]').val(data.email);
-               $('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
+               //$('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
+               $.unblockUI();
            },
            error: function(xhr) {
                console.error('Error loading user:', xhr.responseText);
+               $.unblockUI();
                AdminService.closeModal();
                toastr.error('Error loading user data');
            }
@@ -169,7 +219,8 @@ let AdminService = {
        console.log('=== EDIT STUDENT ===');
        console.log('Data to send:', student);
        
-       $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Saving...');
+       $.blockUI({ message: '<h3>Updating student...</h3>' });
+      // $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Saving...');
        
        $.ajax({
            url: Constants.PROJECT_BASE_URL + 'users/' + student.id,
@@ -179,14 +230,16 @@ let AdminService = {
            success: function(response) {
                console.log('Student updated:', response);
                toastr.success("Student edited successfully");
+               $.unblockUI();
                AdminService.closeModal();
                AdminService.getAllStudents();
-               $('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
+               //$('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
            },
            error: function(xhr) {
                console.error('Edit error:', xhr.responseText);
+               $.unblockUI();
                toastr.error(xhr.responseJSON?.message || "Error editing student");
-               $('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
+               //$('#editStudentForm button[type="submit"]').prop('disabled', false).text('Save changes');
            }
        });
    },
@@ -202,19 +255,21 @@ let AdminService = {
        
        console.log('=== DELETE STUDENT ===');
        console.log('User ID:', id);
-       
+       $.blockUI({ message: '<h3>Deleting student...</h3>' });
        $.ajax({
            url: Constants.PROJECT_BASE_URL + 'users/' + id,
            type: 'DELETE',
            headers: AdminService.getAuthHeaders(),
            success: function(response) {
                console.log('Student deleted:', response);
+               $.unblockUI();
                toastr.success("Student deleted successfully");
                AdminService.closeModal();
                AdminService.getAllStudents();
            },
            error: function(xhr) {
                console.error('Delete error:', xhr.responseText);
+               $.unblockUI();
                toastr.error(xhr.responseJSON?.message || "Error deleting student");
            }
        });

@@ -370,6 +370,127 @@
 
     </div>
 </section>
+<!-- DODAJ OVAJ KOD PRIJE </section> -->
+<script type="text/javascript">
+(function() {
+    console.log("🔧 Blocking form submits...");
+    
+    // Čekaj da forme budu spremne
+    setTimeout(function() {
+        
+        // ========== ADD STUDENT FORM ==========
+        var addStudentForm = document.getElementById("addStudentForm");
+        if (addStudentForm) {
+            addStudentForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Add Student submitted!");
+                
+                if ($(this).valid()) {
+                    var data = Object.fromEntries(new FormData(this).entries());
+                    AdminService.addStudent(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Add Student form blocked");
+        }
+        
+        // ========== EDIT STUDENT FORM ==========
+        var editStudentForm = document.getElementById("editStudentForm");
+        if (editStudentForm) {
+            editStudentForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Edit Student submitted!");
+                
+                if ($(this).valid()) {
+                    var data = Object.fromEntries(new FormData(this).entries());
+                    AdminService.editStudent(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Edit Student form blocked");
+        }
+        
+        // ========== ADD BOOK FORM ==========
+        var addBookForm = document.getElementById("addBookForm");
+        if (addBookForm) {
+            addBookForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Add Book submitted!");
+                
+                var data = Object.fromEntries(new FormData(this).entries());
+                if (typeof BookAdminService !== 'undefined') {
+                    BookAdminService.addBook(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Add Book form blocked");
+        }
+        
+        // ========== EDIT BOOK FORM ==========
+        var editBookForm = document.getElementById("editBookForm");
+        if (editBookForm) {
+            editBookForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Edit Book submitted!");
+                
+                var data = Object.fromEntries(new FormData(this).entries());
+                if (typeof BookAdminService !== 'undefined') {
+                    BookAdminService.editBook(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Edit Book form blocked");
+        }
+        
+        // ========== ADD GENRE FORM ==========
+        var addGenreForm = document.getElementById("addGenreForm");
+        if (addGenreForm) {
+            addGenreForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Add Genre submitted!");
+                
+                var data = Object.fromEntries(new FormData(this).entries());
+                if (typeof GenreAdminService !== 'undefined') {
+                    GenreAdminService.addGenre(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Add Genre form blocked");
+        }
+        
+        // ========== EDIT GENRE FORM ==========
+        var editGenreForm = document.getElementById("editGenreForm");
+        if (editGenreForm) {
+            editGenreForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log("🚀 Edit Genre submitted!");
+                
+                var data = Object.fromEntries(new FormData(this).entries());
+                if (typeof GenreAdminService !== 'undefined') {
+                    GenreAdminService.editGenre(data);
+                }
+                return false;
+            }, true);
+            console.log("✅ Edit Genre form blocked");
+        }
+        
+    }, 500);
+})();
+</script>
+
+</section> <!-- OVDJE JE KRAJ -->
 
 <style>
 /* Tab Navigation */

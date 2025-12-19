@@ -2,23 +2,122 @@ let BookAdminService = {
     initForms: function () {
         console.log('BookAdminService.initForms() called');
         
-        $("#addBookForm").on('submit', function(e) {
-            e.preventDefault(); 
-            console.log('Add book form submitted');
-            
-            var book = Object.fromEntries(new FormData(this).entries());
-            console.log('Book data:', book);
-            BookAdminService.addBook(book);
-            this.reset();
+        $("#addBookForm").validate({
+        rules: {
+                title: {
+                    required: true,
+                    minlength: 2
+                },
+                author: {
+                    required: true,
+                    minlength: 2
+                },
+                isbn: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 17
+                },
+                available_quantity: {
+                    min: 0
+                },
+                publication_year: {
+                    min: 1000,
+                    max: 2026
+                },
+                genre_id: {
+                    required: true
+                }
+            },
+            messages: {
+                title: {
+                    required: "Please enter book title",
+                    minlength: "Title must be at least 2 characters"
+                },
+                author: {
+                    required: "Please enter author name",
+                    minlength: "Author name must be at least 2 characters"
+                },
+                isbn: {
+                    required: "Please enter ISBN",
+                    minlength: "ISBN must be at least 10 characters",
+                    maxlength: "ISBN cannot exceed 17 characters"
+                },
+                available_quantity: {
+                    min: "Quantity cannot be negative"
+                },
+                publication_year: {
+                    min: "Year must be after 1000",
+                    max: "Year cannot be in the future"
+                },
+                genre_id: {
+                    required: "Please select a genre"
+                }
+            },
+            submitHandler: function(form, event) {  
+                if (event) event.preventDefault();
+                var book = Object.fromEntries(new FormData(form).entries());
+                console.log('Book data:', book);
+                BookAdminService.addBook(book);
+                return false;
+            }
         });
         
-        $("#editBookForm").on('submit', function(e) {
-            e.preventDefault(); 
-            console.log('Edit book form submitted');
-            
-            var book = Object.fromEntries(new FormData(this).entries());
-            console.log('Book data:', book);
-            BookAdminService.editBook(book);
+        $("#editBookForm").validate({
+            rules: {
+                title: {
+                    required: true,
+                    minlength: 2
+                },
+                author: {
+                    required: true,
+                    minlength: 2
+                },
+                genre_id: {
+                    required: true
+                },
+                isbn: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 17
+                },
+                available_quantity: {
+                    min: 0
+                },
+                publication_year: {
+                    min: 1000,
+                    max: 2026
+                }
+            },
+            messages: {
+                title: {
+                    required: "Please enter book title",
+                    minlength: "Title must be at least 2 characters"
+                },
+                author: {
+                    required: "Please enter author name",
+                    minlength: "Author name must be at least 2 characters"
+                },
+                genre_id: {
+                    required: "Please select a genre"
+                },
+                isbn: {
+                    required: "Please enter ISBN",
+                    minlength: "ISBN must be at least 10 characters",
+                    maxlength: "ISBN cannot exceed 17 characters"
+                },
+                available_quantity: {
+                    min: "Quantity cannot be negative"
+                },
+                publication_year: {
+                    min: "Year must be after 1000",
+                    max: "Year cannot be in the future"
+                }
+            },
+            submitHandler: function(form) {
+                var book = Object.fromEntries(new FormData(form).entries());
+                console.log('Book data:', book);
+                BookAdminService.editBook(book);
+            }
         });
     },
 
@@ -55,14 +154,17 @@ let BookAdminService = {
         book.genre_id = parseInt(book.genre_id);
         book.available_quantity = parseInt(book.available_quantity);
 
+        $.blockUI({ message: '<h3>Adding book...</h3>' }); 
+
         RestClient.post('books', book, function(response){
             console.log('Book added successfully:', response);
+            $.unblockUI();
             toastr.success("Book added successfully");
             BookAdminService.getAllBooks();
             BookAdminService.closeModal();
         }, function(response){
             console.error('Error adding book:', response);
-            BookAdminService.closeModal();
+            $.unblockUI();
             toastr.error(response.responseJSON ? response.responseJSON.message : 'Error adding book');
         });
     },
@@ -143,13 +245,17 @@ let BookAdminService = {
         book.genre_id = parseInt(book.genre_id);
         book.available_quantity = parseInt(book.available_quantity);
         
+        $.blockUI({ message: '<h3>Updating book...</h3>' });
+
         RestClient.put('books/' + book.id, book, function (data) {
             console.log('Book updated:', data);
+            $.unblockUI();
             toastr.success("Book updated successfully");
             BookAdminService.closeModal();
             BookAdminService.getAllBooks();
         }, function (xhr, status, error) {
             console.error('Error updating book:', error);
+            $.unblockUI();
             toastr.error("Error updating book");
         });
     },
@@ -165,14 +271,17 @@ let BookAdminService = {
         var bookId = $("#delete_book_id").val();
         console.log('Deleting book:', bookId);
         
+        $.blockUI({ message: '<h3>Deleting book...</h3>' }); 
+
         RestClient.delete('books/' + bookId, null, function(response){
             console.log('Book deleted:', response);
+            $.unblockUI()
             BookAdminService.closeModal();
             toastr.success("Book deleted successfully");
             BookAdminService.getAllBooks();
         }, function(response){
             console.error('Error deleting book:', response);
-            BookAdminService.closeModal();
+            $.unblockUI()
             toastr.error(response.responseJSON ? response.responseJSON.message : 'Error deleting book');
         });
     }
