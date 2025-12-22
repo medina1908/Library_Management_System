@@ -1,58 +1,57 @@
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <section class="page-section" id="book-genres">
     <div class="container px-4 px-lg-5">
         <h2>BOOK GENRES</h2>
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-center" id="genres-container">
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-book-open fs-1"></i>
-                        <h5>Fiction</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="1" data-genre-name="Fiction">
+                    <i class="fas fa-book-open fs-1"></i>
+                    <h5>Fiction</h5>
                     <p>Explore imaginative stories and creative worlds that take you beyond reality.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-book fs-1"></i>
-                        <h5>Non-Fiction</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="2" data-genre-name="Non-Fiction">
+                    <i class="fas fa-book fs-1"></i>
+                    <h5>Non-Fiction</h5>
                     <p>Learn real-life facts, biographies, and informative content to expand your knowledge.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-flask fs-1"></i>
-                        <h5>Science</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="3" data-genre-name="Science">
+                    <i class="fas fa-flask fs-1"></i>
+                    <h5>Science</h5>
                     <p>Dive into discoveries, experiments, and the wonders of the natural world.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-mosque fs-1"></i>
-                        <h5>Islam</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="4" data-genre-name="Islam">
+                    <i class="fas fa-mosque fs-1"></i>
+                    <h5>Islam</h5>
                     <p>Explore the rich teachings, history, and culture of Islamic traditions.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-landmark fs-1"></i>
-                        <h5>History</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="5" data-genre-name="History">
+                    <i class="fas fa-landmark fs-1"></i>
+                    <h5>History</h5>
                     <p>Discover events, civilizations, and stories that shaped the world we live in.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="genre-card">
-                        <i class="fas fa-palette fs-1"></i>
-                        <h5>Art</h5>
-                    </a>
+                <div class="genre-card" data-genre-id="6" data-genre-name="Art">
+                    <i class="fas fa-palette fs-1"></i>
+                    <h5>Art</h5>
                     <p>Appreciate creativity through painting, sculpture, and visual masterpieces.</p>
                 </div>
             </div>
         </div>
+
+        <div class="row g-4 mt-4" id="books-container">
+        </div>
     </div>
 </section>
+    <script type="text/javascript">
+        GenreService.init();
+    </script>

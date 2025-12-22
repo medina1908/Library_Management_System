@@ -1,3 +1,4 @@
+<body>
 <div class="d-flex" id="dashboard">
     <!-- Sidebar -->
     <nav class="sidebar p-3">
@@ -5,47 +6,47 @@
       <ul class="nav flex-column">
         <li class="nav-item mb-2"><a href="#dashboard" class="nav-link text-white">Dashboard</a></li>
         <li class="nav-item mb-2"><a href="#home" class="nav-link text-white">Home</a></li>
-        <li class="nav-item mb-2"><a href="#history" class="nav-link text-white">History</a></li>
         <li class="nav-item mb-2"><a href="#bookGenres" class="nav-link text-white">Book Genres</a></li>
         <li class="nav-item mt-3"><a href="#home" id="logoutButton" class="nav-link text-danger">Logout</a></li>
       </ul>
     </nav>
 
 
-    <div class="main flex-grow-1 p-4">
-      <h1 class="mb-4">Welcome, Admin!</h1>
+     <div class="main flex-grow-1 p-4">
+      <h1 class="mb-4" id="welcomeMessage">Welcome!</h1>
 
       <div class="row g-4">
         <div class="col-md-4">
-          <div class="card card-dashboard">
+          <div class="card text-center shadow-sm card-dashboard">
             <div class="card-body">
               <h5 class="card-title">Books</h5>
-              <p class="card-text display-6">85</p>
+              <p class="card-text display-6" id="booksCard">0</p>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card card-dashboard">
+          <div class="card text-center shadow-sm card-dashboard">
             <div class="card-body">
               <h5 class="card-title">Reviews</h5>
-              <p class="card-text display-6">320</p>
+              <p class="card-text display-6" id="reviewsCard">0</p>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card card-dashboard">
+          <div class="card text-center shadow-sm card-dashboard">
             <div class="card-body">
               <h5 class="card-title">Book Genres</h5>
-              <p class="card-text display-6">15</p>
+              <p class="card-text display-6" id="genresCard">0</p>
             </div>
           </div>
         </div>
       </div>
+
       <div class="row mt-5">
         <div class="col-lg-12">
-          <div class="card card-dashboard p-4">
+          <div class="card shadow-sm card-dashboard p-4">
             <h5 class="card-title">Books per Category</h5>
             <canvas id="booksChart" height="100"></canvas>
           </div>
@@ -53,3 +54,7 @@
       </div>
     </div>
 </div>
+<script type="text/javascript">
+    Dashboard.init();
+</script>
+</body>

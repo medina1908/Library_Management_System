@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /library_management_system/backend/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]

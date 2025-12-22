@@ -1,0 +1,70 @@
+
+
+
+/* RESET da Bootstrap ne pravi gluposti */
+#admin * {
+  box-sizing: border-box;
+}
+
+/* POZADINA STRANICE */
+#admin {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e9f0f8, #f7f9fc);
+  padding: 40px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* BIJELA KARTA (DASHBOARD) */
+#admin .admin-wrapper {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+/* NASLOV */
+#admin h1 {
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #0d3b66;
+}
+
+/* BUTTON */
+#admin .btn-info {
+  background: #1d5f8a;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+}
+
+#admin .btn-info:hover {
+  background: #0d3b66;
+}
+
+/* TABLE */
+#students-table {
+  width: 100%;
+  margin-top: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* MODALI */
+.modal-content {
+  border-radius: 14px;
+}
+
+.modal-header {
+  background: #1d5f8a;
+  color: white;
+}
+
+.modal-footer .btn-primary {
+  background: #1d5f8a;
+  border: none;
+}
+
+.modal-footer .btn-primary:hover {
+  background: #0d3b66;
+}

@@ -5,12 +5,19 @@ require_once __DIR__ . '/../dao/BookDao.php';
 require_once __DIR__ . '/../dao/UserDao.php';
 
 class BorrowHistoryService extends BaseService {
+
+    private $bookDao;
+    private $userDao; 
+
    public function __construct() {
        $dao = new BorrowHistoryDao();
        $this->bookDao = new BookDao();
        $this->userDao = new UserDao();
        parent::__construct($dao);
    }
+        public function getAllBorrows() {
+            return $this->dao->getAll();
+        }
 
         public function borrowBook($userId, $bookId) {
         $user = $this->userDao->getById($userId);

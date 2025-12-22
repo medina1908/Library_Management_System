@@ -14,6 +14,7 @@ Flight::route('GET /genres', function(){
     Flight::json(Flight::genreService()->getAllGenres());
 });
 
+
 /**
  * @OA\Get(
  *     path="/genres/{name}",
@@ -55,9 +56,18 @@ Flight::route('GET /genres/@name', function($name){
  * )
  */
 Flight::route('POST /genres', function(){
-    $data = Flight::request()->data->getData();
-    $result = Flight::genreService()->createGenre($data);
-    Flight::json($result);
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+    
+    $data = json_decode(file_get_contents('php://input'), true);
+    error_log("Genre POST data: " . print_r($data, true));
+    
+    try {
+        $result = Flight::genreService()->createGenre($data);
+        Flight::json($result);
+    } catch (Exception $e) {
+        error_log("Error: " . $e->getMessage());
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
 });
 /**
  * @OA\Put(
@@ -85,9 +95,18 @@ Flight::route('POST /genres', function(){
  * )
  */
 Flight::route('PUT /genres/@id', function($id){
-    $data = Flight::request()->data->getData();
-    $result = Flight::genreService()->updateGenreName($id, $data['name']);
-    Flight::json($result);
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+    
+    $data = json_decode(file_get_contents('php://input'), true);
+    error_log("Genre PUT data: " . print_r($data, true));
+    
+    try {
+        $result = Flight::genreService()->updateGenreName($id, $data);
+        Flight::json($result);
+    } catch (Exception $e) {
+        error_log("Update error: " . $e->getMessage());
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
 });
 /**
  * @OA\Delete(
@@ -107,9 +126,18 @@ Flight::route('PUT /genres/@id', function($id){
  *     )
  * )
  */
-Flight::route('DELETE /genres/@name', function($name){
-    $result = Flight::genreService()->deleteGenreByName($name);
-    Flight::json($result);
+Flight::route('DELETE /genres/@id', function($id){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+    
+    error_log("Deleting genre ID: " . $id);
+    
+    try {
+        $result = Flight::genreService()->deleteGenre($id);
+        Flight::json(['success' => true, 'message' => 'Genre deleted']);
+    } catch (Exception $e) {
+        error_log("Delete error: " . $e->getMessage());
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
 });
 
 

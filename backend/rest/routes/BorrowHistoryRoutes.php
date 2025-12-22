@@ -19,9 +19,23 @@
  * )
  */
 Flight::route('GET /borrow/user/@userId', function($userId){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::borrowHistoryService()->getUserBorrowHistory($userId));
 });
-
+/**
+ * @OA\Get(
+ *     path="/borrow",
+ *     tags={"borrow"},
+ *     summary="Get all borrow history",
+ *     @OA\Response(
+ *         response=200,
+ *         description="Returns all borrow records"
+ *     )
+ * )
+ */
+Flight::route('GET /borrow', function(){
+    Flight::json(Flight::borrowHistoryService()->getAllBorrows());
+});
 /**
  * @OA\Get(
  *     path="/borrow/borrowed",
@@ -34,6 +48,7 @@ Flight::route('GET /borrow/user/@userId', function($userId){
  * )
  */
 Flight::route('GET /borrow/borrowed', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::borrowHistoryService()->getActiveBorrows());
 });
 
@@ -50,6 +65,7 @@ Flight::route('GET /borrow/borrowed', function(){
  */
 
 Flight::route('GET /borrow/returned', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::borrowHistoryService()->getReturnedBorrows());
 });
 
@@ -65,6 +81,7 @@ Flight::route('GET /borrow/returned', function(){
  * )
  */
 Flight::route('GET /borrow/overdue', function(){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::borrowHistoryService()->getOverdueBorrows());
 });
 
@@ -94,6 +111,7 @@ Flight::route('GET /borrow/overdue', function(){
  * )
  */
 Flight::route('POST /borrow/@bookId', function($bookId){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     $data = Flight::request()->data->getData();
     $userId = $data['user_id']; 
     Flight::json(Flight::borrowHistoryService()->borrowBook($userId, $bookId));
@@ -118,6 +136,7 @@ Flight::route('POST /borrow/@bookId', function($bookId){
  * )
  */
 Flight::route('POST /borrow/@borrowId/return', function($borrowId){
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
     Flight::json(Flight::borrowHistoryService()->returnBook($borrowId));
 });
 ?>
