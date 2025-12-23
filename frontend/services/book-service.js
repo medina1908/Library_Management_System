@@ -129,7 +129,7 @@ let BookAdminService = {
 
     loadGenresForDropdown: function() {
         console.log('loadGenresForDropdown() started');
-        console.log('URL will be:', Constants.PROJECT_BASE_URL + 'genres');
+        console.log('URL will be:', Constants.PROJECT_BASE_URL() + 'genres');
         
         RestClient.get("genres", function(data){
             console.log('Genres received for dropdown:', data);
@@ -171,7 +171,7 @@ let BookAdminService = {
 
     getAllBooks: function(){
         console.log('getAllBooks() started');
-        console.log('URL will be:', Constants.PROJECT_BASE_URL + 'books');
+        console.log('URL will be:', Constants.PROJECT_BASE_URL() + 'books');
         
         RestClient.get("books", function(data){
             console.log('Books received:', data);

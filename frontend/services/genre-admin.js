@@ -82,7 +82,7 @@ let GenreAdminService = {
 
     getAllGenres: function(){
         console.log('getAllGenres() started');
-        console.log('URL will be:', Constants.PROJECT_BASE_URL + 'genres');
+        console.log('URL will be:', Constants.PROJECT_BASE_URL() + 'genres');
         
         RestClient.get("genres", function(data){
             console.log('Genres received:', data);

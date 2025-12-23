@@ -1,6 +1,6 @@
 var GenreService = {
-    BASE_URL: Constants.PROJECT_BASE_URL + "genres",
-    BOOKS_URL: Constants.PROJECT_BASE_URL + "books",
+    BASE_URL: Constants.PROJECT_BASE_URL() + "genres",
+    BOOKS_URL: Constants.PROJECT_BASE_URL() + "books",
 
     init: function () {
         console.log("Initializing GenreService...");

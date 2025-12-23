@@ -26,7 +26,7 @@ var Dashboard = {
 
     loadBooks: function(token) {
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "books",
+            url: Constants.PROJECT_BASE_URL() + "books",
             type: "GET",
             headers: this.getAuthHeader(token),
             success: function(data) { console.log("Books:", data); },
@@ -36,7 +36,7 @@ var Dashboard = {
 
     loadGenres: function(token) {
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "genres",
+            url: Constants.PROJECT_BASE_URL() + "genres",
             type: "GET",
             headers: this.getAuthHeader(token),
             success: function(data) { console.log("Genres:", data); },
@@ -46,7 +46,7 @@ var Dashboard = {
 
     loadReviews: function(token) {
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "reviews",
+            url: Constants.PROJECT_BASE_URL() + "reviews",
             type: "GET",
             headers: this.getAuthHeader(token),
             success: function(data) { console.log("Reviews:", data); },

@@ -55,7 +55,7 @@ init: function () {
     login: function (entity) {
         $.blockUI({ message: '<h3>Logging in...</h3>' });
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "auth/login",
+            url: Constants.PROJECT_BASE_URL() + "auth/login",
             type: "POST",
             data: JSON.stringify(entity),
             contentType: "application/json",

@@ -24,7 +24,7 @@ const ReviewService = {
         const reviewsList = document.getElementById('reviewsList');
         
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "reviews",
+            url: Constants.PROJECT_BASE_URL() + "reviews",
             type: "GET",
             dataType: "json",
             success: function(res) {
@@ -84,7 +84,7 @@ const ReviewService = {
             };
             
             $.ajax({
-                url: Constants.PROJECT_BASE_URL + "reviews",
+                url: Constants.PROJECT_BASE_URL() + "reviews",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(data),

@@ -120,7 +120,7 @@ let AdminService = {
        console.log('Data to send:', student);
        
        $.ajax({
-           url: Constants.PROJECT_BASE_URL + 'users',
+           url: Constants.PROJECT_BASE_URL() + 'users',
            type: 'POST',
            headers: AdminService.getAuthHeaders(),
            data: JSON.stringify(student),
@@ -146,7 +146,7 @@ let AdminService = {
        console.log('=== Fetching all students ===');
        
        $.ajax({
-           url: Constants.PROJECT_BASE_URL + 'users',
+           url: Constants.PROJECT_BASE_URL() + 'users',
            type: 'GET',
            headers: AdminService.getAuthHeaders(),
            success: function(data) {
@@ -195,7 +195,7 @@ let AdminService = {
       // $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Loading...');
        
        $.ajax({
-           url: Constants.PROJECT_BASE_URL + 'users/' + id,
+           url: Constants.PROJECT_BASE_URL() + 'users/' + id,
            type: 'GET',
            headers: AdminService.getAuthHeaders(),
            success: function(data) {
@@ -223,7 +223,7 @@ let AdminService = {
       // $('#editStudentForm button[type="submit"]').prop('disabled', true).text('Saving...');
        
        $.ajax({
-           url: Constants.PROJECT_BASE_URL + 'users/' + student.id,
+           url: Constants.PROJECT_BASE_URL() + 'users/' + student.id,
            type: 'PUT',
            headers: AdminService.getAuthHeaders(),
            data: JSON.stringify(student),
@@ -257,7 +257,7 @@ let AdminService = {
        console.log('User ID:', id);
        $.blockUI({ message: '<h3>Deleting student...</h3>' });
        $.ajax({
-           url: Constants.PROJECT_BASE_URL + 'users/' + id,
+           url: Constants.PROJECT_BASE_URL() + 'users/' + id,
            type: 'DELETE',
            headers: AdminService.getAuthHeaders(),
            success: function(response) {
