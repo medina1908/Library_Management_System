@@ -21,42 +21,38 @@
 (function() {
     console.log("🔧 Login script loaded!");
     
-    // Funkcija za inicijalizaciju
     function initLoginForm() {
         var form = document.getElementById("authLoginForm");
         
         if (!form) {
-            console.log("❌ Form not found yet, retrying...");
+            console.log("Form not found yet, retrying...");
             setTimeout(initLoginForm, 100);
             return;
         }
         
-        console.log("✅ Form found!");
+        console.log("Form found!");
         
-        // NATIVE JavaScript - blokiraj submit
         form.addEventListener("submit", function(e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             
-            console.log("🚀 Form submitted via JavaScript!");
+            console.log("Form submitted via JavaScript!");
             
             var formData = new FormData(form);
             var entity = Object.fromEntries(formData.entries());
             
-            console.log("📤 Data:", entity);
+            console.log("Data:", entity);
             
-            // Pozovi UserService
             if (typeof UserService !== 'undefined') {
                 UserService.login(entity);
             } else {
-                console.error("❌ UserService is not defined!");
+                console.error("UserService is not defined!");
             }
             
             return false;
-        }, true); // true = capture phase
+        }, true); 
         
-        // jQuery validation (ako radi)
         if (typeof $.fn.validate !== 'undefined') {
             $("#authLoginForm").validate({
                 rules: {
@@ -74,13 +70,12 @@
                     }
                 }
             });
-            console.log("✅ Validation setup complete!");
+            console.log("Validation setup complete!");
         } else {
-            console.log("⚠️ jQuery Validate not loaded");
+            console.log("jQuery Validate not loaded");
         }
     }
     
-    // Pokreni inicijalizaciju
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initLoginForm);
     } else {
