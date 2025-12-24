@@ -23,7 +23,7 @@ const HistoryService = {
         }
         
         $.ajax({
-            url: Constants.PROJECT_BASE_URL + "borrow",
+            url: Constants.PROJECT_BASE_URL() + "borrow",
             type: "GET",
             dataType: "json",
             success: function(res) {

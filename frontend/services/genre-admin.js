@@ -2,28 +2,62 @@ let GenreAdminService = {
     initForms: function () {
     console.log('GenreAdminService.initForms() called');
     
-    $("#addGenreForm").off('submit').on('submit', function(e) {
-        e.preventDefault();
-        e.stopPropagation();  
-        console.log('Add genre form submitted');
-        
-        var genre = Object.fromEntries(new FormData(this).entries());
-        console.log('Genre data:', genre);
-        GenreAdminService.addGenre(genre);
-        this.reset();
-        return false;  
-    });
+    $("#addGenreForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                description: {
+                    minlength: 5
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter genre name",
+                    minlength: "Genre name must be at least 2 characters"
+                },
+                description: {
+                    minlength: "Description must be at least 5 characters"
+                }
+            },
+            submitHandler: function(form, event) {
+                if (event) event.preventDefault();
+                var genre = Object.fromEntries(new FormData(form).entries());
+                console.log('Genre data:', genre);
+                GenreAdminService.addGenre(genre);
+                return false;
+            }
+        });
     
-    $("#editGenreForm").off('submit').on('submit', function(e) {
-        e.preventDefault();
-        e.stopPropagation();  
-        console.log('Edit genre form submitted');
-        
-        var genre = Object.fromEntries(new FormData(this).entries());
-        GenreAdminService.editGenre(genre);
-        return false;  
-    });
-},
+    $("#editGenreForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2
+                },
+                description: {
+                    minlength: 5
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter genre name",
+                    minlength: "Genre name must be at least 2 characters"
+                },
+                description: {
+                    minlength: "Description must be at least 5 characters"
+                }
+            },
+            submitHandler: function(form, event) {
+                if (event) event.preventDefault();
+                var genre = Object.fromEntries(new FormData(form).entries());
+                console.log('Genre data:', genre);
+                GenreAdminService.addGenre(genre);
+                return false;
+            }
+        });
+    },
     openAddModal: function() {
         console.log('Opening add genre modal');
         $('#addGenreModal').addClass('show');
@@ -31,22 +65,24 @@ let GenreAdminService = {
 
     addGenre: function (genre) {
         console.log('Adding genre:', genre);
+        $.blockUI({ message: '<h3>Adding genre...</h3>' });
         
         RestClient.post('genres', genre, function(response){
             console.log('Genre added successfully:', response);
+            $.unblockUI();
             toastr.success("Genre added successfully");
             GenreAdminService.getAllGenres();
             GenreAdminService.closeModal();
         }, function(response){
             console.error('Error adding genre:', response);
-            GenreAdminService.closeModal();
+            $.unblockUI();
             toastr.error(response.responseJSON ? response.responseJSON.message : 'Error adding genre');
         });
     },
 
     getAllGenres: function(){
         console.log('getAllGenres() started');
-        console.log('URL will be:', Constants.PROJECT_BASE_URL + 'genres');
+        console.log('URL will be:', Constants.PROJECT_BASE_URL() + 'genres');
         
         RestClient.get("genres", function(data){
             console.log('Genres received:', data);
@@ -80,14 +116,17 @@ let GenreAdminService = {
 
     getGenreById: function(id) {
         console.log('Getting genre by id:', id);
+        $.blockUI({ message: '<h3>Loading genre data...</h3>' });
         
         RestClient.get('genres/' + id, function (data) {
             console.log('Genre loaded:', data);
             $('#editGenreForm input[name="id"]').val(data.id);
             $('#editGenreForm input[name="name"]').val(data.name);
             $('#editGenreForm textarea[name="description"]').val(data.description);
+            $.unblockUI();
         }, function (xhr, status, error) {
             console.error('Error fetching genre:', error);
+            $.unblockUI();
         });
     },
 
@@ -107,13 +146,17 @@ let GenreAdminService = {
     editGenre: function(genre){
         console.log('Editing genre:', genre);
         
+        $.blockUI({ message: '<h3>Updating genre...</h3>' });
+
         RestClient.put('genres/' + genre.id, genre, function (data) {
             console.log('Genre updated:', data);
+            $.unblockUI();
             toastr.success("Genre updated successfully");
             GenreAdminService.closeModal();
             GenreAdminService.getAllGenres();
         }, function (xhr, status, error) {
             console.error('Error updating genre:', error);
+            $.unblockUI();
             toastr.error("Error updating genre");
         });
     },
@@ -128,15 +171,18 @@ let GenreAdminService = {
     deleteGenre: function () {
         var genreId = $("#delete_genre_id").val();
         console.log('Deleting genre:', genreId);
+        $.blockUI({ message: '<h3>Deleting genre...</h3>' });
+
         
         RestClient.delete('genres/' + genreId, null, function(response){
             console.log('Genre deleted:', response);
+            $.unblockUI();
             GenreAdminService.closeModal();
             toastr.success("Genre deleted successfully");
             GenreAdminService.getAllGenres();
         }, function(response){
             console.error('Error deleting genre:', response);
-            GenreAdminService.closeModal();
+            $.unblockUI();
             toastr.error(response.responseJSON ? response.responseJSON.message : 'Error deleting genre');
         });
     }

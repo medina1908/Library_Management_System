@@ -1,16 +1,14 @@
-
 <body>
     <div class="login-container d-flex align-items-center justify-content-center">
         <div class="login-card p-4 rounded shadow">
             <h2 class="text-center mb-4">IBU Library<br>Login</h2>
-            <form id="authLoginForm">
-            <!-- <form id="login-form"> -->
+            <form id="authLoginForm" novalidate>
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="loginEmail" placeholder="name@ibu.edu.ba" required>
+                    <input type="email" name="email" class="form-control" id="loginEmail" placeholder="name@ibu.edu.ba">
                     <label for="loginEmail">Student Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Enter password" required>
+                    <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Enter password">
                     <label for="loginPassword">Password</label>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Login</button>
@@ -19,8 +17,71 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-    <script type="text/javascript">
-        UserService.init();
-    </script>
+   <script type="text/javascript">
+(function() {
+    console.log("🔧 Login script loaded!");
+    
+    function initLoginForm() {
+        var form = document.getElementById("authLoginForm");
+        
+        if (!form) {
+            console.log("Form not found yet, retrying...");
+            setTimeout(initLoginForm, 100);
+            return;
+        }
+        
+        console.log("Form found!");
+        
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            console.log("Form submitted via JavaScript!");
+            
+            var formData = new FormData(form);
+            var entity = Object.fromEntries(formData.entries());
+            
+            console.log("Data:", entity);
+            
+            if (typeof UserService !== 'undefined') {
+                UserService.login(entity);
+            } else {
+                console.error("UserService is not defined!");
+            }
+            
+            return false;
+        }, true); 
+        
+        if (typeof $.fn.validate !== 'undefined') {
+            $("#authLoginForm").validate({
+                rules: {
+                    email: { required: true, email: true },
+                    password: { required: true, minlength: 8 }
+                },
+                messages: {
+                    email: {
+                        required: "Email je obavezan",
+                        email: "Unesite validan email"
+                    },
+                    password: {
+                        required: "Password je obavezan",
+                        minlength: "Minimum 8 karaktera"
+                    }
+                }
+            });
+            console.log("Validation setup complete!");
+        } else {
+            console.log("jQuery Validate not loaded");
+        }
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLoginForm);
+    } else {
+        initLoginForm();
+    }
+})();
+</script>
 </body>
+```
